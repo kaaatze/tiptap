@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import RichTextEditor, { BaseKit } from 'reactjs-tiptap-editor';
-import { Bold } from 'reactjs-tiptap-editor/bold';
-import { Clear } from 'reactjs-tiptap-editor/clear';
-import { FontFamily } from 'reactjs-tiptap-editor/fontfamily';
-import { FontSize } from 'reactjs-tiptap-editor/fontsize';
-import { FormatPainter } from 'reactjs-tiptap-editor/formatpainter';
-import { Heading } from 'reactjs-tiptap-editor/heading';
-import { History } from 'reactjs-tiptap-editor/history';
-import { Italic } from 'reactjs-tiptap-editor/italic';
-import { MoreMark } from 'reactjs-tiptap-editor/moremark';
-import { SearchAndReplace } from 'reactjs-tiptap-editor/searchandreplace';
-import { Strike } from 'reactjs-tiptap-editor/strike';
-import { TextUnderline } from 'reactjs-tiptap-editor/textunderline';
-import { Emoji } from 'reactjs-tiptap-editor/emoji';
-import { Image } from 'reactjs-tiptap-editor/image';
-import { TextAlign } from 'reactjs-tiptap-editor/textalign';
-import { OrderedList } from 'reactjs-tiptap-editor/orderedlist';
-import { BulletList } from 'reactjs-tiptap-editor/bulletlist';
-// Import CSS
-import 'reactjs-tiptap-editor/style.css';
+import { useState } from "react";
+import RichTextEditor, { BaseKit } from "reactjs-tiptap-editor";
+import { Bold } from "reactjs-tiptap-editor/bold";
+import { Clear } from "reactjs-tiptap-editor/clear";
+import { FontFamily } from "reactjs-tiptap-editor/fontfamily";
+import { FontSize } from "reactjs-tiptap-editor/fontsize";
+import { FormatPainter } from "reactjs-tiptap-editor/formatpainter";
+import { Heading } from "reactjs-tiptap-editor/heading";
+import { History } from "reactjs-tiptap-editor/history";
+import { Italic } from "reactjs-tiptap-editor/italic";
+import { MoreMark } from "reactjs-tiptap-editor/moremark";
+import { SearchAndReplace } from "reactjs-tiptap-editor/searchandreplace";
+import { Strike } from "reactjs-tiptap-editor/strike";
+import { TextUnderline } from "reactjs-tiptap-editor/textunderline";
+import { Emoji } from "reactjs-tiptap-editor/emoji";
+import { Image } from "reactjs-tiptap-editor/image";
+import { TextAlign } from "reactjs-tiptap-editor/textalign";
+import { OrderedList } from "reactjs-tiptap-editor/orderedlist";
+import { BulletList } from "reactjs-tiptap-editor/bulletlist";
+
+import "reactjs-tiptap-editor/style.css";
 
 const extensions = [
   BaseKit.configure({
@@ -40,9 +40,9 @@ const extensions = [
     upload: (files: File) => {
       return new Promise((resolve) => {
         setTimeout(() => {
-          resolve(URL.createObjectURL(files))
-        }, 500)
-      })
+          resolve(URL.createObjectURL(files));
+        }, 500);
+      });
     },
   }),
   Bold,
@@ -51,28 +51,37 @@ const extensions = [
   Strike,
   BulletList,
   OrderedList,
-  TextAlign.configure({ types: ['heading', 'paragraph'], spacer: true }),
+
+  TextAlign.configure({ types: ["heading", "paragraph"], spacer: true, defaultAlignment: "left" }),
   MoreMark,
-  Emoji,]
-const DEFAULT = '';
+  Emoji,
+];
+const DEFAULT = "";
 
 const Editor = () => {
   const [content, setContent] = useState(DEFAULT);
-
+  const [theme, setTheme] = useState('light')
   const onChangeContent = (value: string) => {
     setContent(value);
   };
 
   return (
-    <>
+    <div >
       <RichTextEditor
-        output='html'
+        output="html"
         content={content}
+        dark={theme === 'dark'}
         onChangeContent={onChangeContent}
         extensions={extensions}
+
       />
-      <button onClick={() => console.log(content)}> Kirim</button>
-    </>
+      <div className="flex">
+        <button className="bg-amber-400 p-3 rounded-full w-full" onClick={() => console.log(content)}> Kirim</button>
+        <button className="w-full bg-blue-300 rounded-full p-3 " type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+          {theme === 'dark' ? 'Light' : 'Dark'}
+        </button>
+      </div>
+    </div>
   );
 };
-export default Editor
+export default Editor;
